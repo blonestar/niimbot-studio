@@ -26,6 +26,7 @@ nsis:
 
 linux:
   target: [AppImage, deb, rpm]
+  icon: build/icons
   category: Office
   syncDesktopName: true
   maintainer: blonestar <blonestar@users.noreply.github.com>
