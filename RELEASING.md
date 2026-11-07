@@ -5,23 +5,30 @@ GitHub Releases for new versions and updates itself.
 
 ## Make a release
 
-1. Bump the version. This edits `package.json`, commits, and creates the tag:
+`main` is protected: every change, the version bump included, goes through a pull request.
+
+1. Bump the version on a branch and open a pull request:
 
    ```sh
-   npm version patch        # 0.1.0 -> 0.1.1
-   npm version minor        # 0.1.0 -> 0.2.0
-   npm version prerelease --preid beta   # 0.2.0 -> 0.2.1-beta.0
+   git switch -c release/0.1.1 main
+   npm version patch --no-git-tag-version        # 0.1.0 -> 0.1.1 (or minor, or: prerelease --preid beta)
+   git commit -am "Release 0.1.1"
+   git push -u origin release/0.1.1
+   gh pr create --fill
    ```
 
-2. Push the commit and the tag:
+2. Merge the pull request after CI passes.
+3. Tag the merged commit and push the tag:
 
    ```sh
-   git push --follow-tags
+   git switch main && git pull
+   git tag -a v0.1.1 -m v0.1.1
+   git push origin v0.1.1
    ```
 
-3. Wait for the **Release** workflow. It builds the Windows and Linux installers and uploads them
-   to a **draft** release.
-4. Open the draft on GitHub, write the release notes, and publish it. For a beta version, select
+4. Wait for the **Release** workflow. It builds the Windows, macOS and Linux installers and uploads
+   them to a **draft** release.
+5. Open the draft on GitHub, write the release notes, and publish it. For a beta version, select
    **Set as a pre-release**.
 
 The app sees a release only after you publish it. Beta versions reach only users who turned on
