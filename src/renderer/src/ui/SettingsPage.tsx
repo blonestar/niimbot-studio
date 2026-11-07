@@ -50,26 +50,34 @@ function PrinterSection() {
     const next = useSettings.getState().profile;
     const { doc, setLabel } = useEditor.getState();
     const fits = next.labels.some((l) => l.widthMm === doc.label.widthMm && l.heightMm === doc.label.heightMm);
-    const roll = next.labels[0];
-    if (roll && !fits) setLabel({ widthMm: roll.widthMm, heightMm: roll.heightMm });
+    if (!fits) setLabel(next.defaultLabel);
   };
 
   return (
     <Section title={t("settings.printer")}>
-      <label className="field">
-        <span>{t("settings.model")}</span>
-        <select value={profile.id} disabled={connected} onChange={(e) => choose(e.target.value)}>
-          {vendors.map((v) => (
-            <optgroup key={v} label={v}>
-              {PROFILES.filter((p) => p.vendor === v).map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.name}
-                </option>
-              ))}
-            </optgroup>
-          ))}
-        </select>
-      </label>
+      <span className="field-label">{t("settings.model")}</span>
+      {vendors.map((v) => (
+        <div key={v} className="model-group" role="radiogroup" aria-label={v}>
+          <span className="vendor">{v}</span>
+          <div className="model-grid">
+            {PROFILES.filter((p) => p.vendor === v).map((p) => (
+              <button
+                key={p.id}
+                role="radio"
+                aria-checked={p.id === profile.id}
+                className={`model-card${p.id === profile.id ? " on" : ""}`}
+                disabled={connected && p.id !== profile.id}
+                onClick={() => choose(p.id)}
+              >
+                <strong>{p.name}</strong>
+                <small>
+                  {Math.round(printheadMm(p))} {t("unit.mm")} · {p.dpi} dpi
+                </small>
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
       {connected && <p className="hint">{t("settings.autoModel")}</p>}
       <dl className="specs">
         <dt>{t("settings.resolution")}</dt>

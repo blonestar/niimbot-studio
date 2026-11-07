@@ -6,9 +6,11 @@ const strip = (w: number, lengths: number[]): LabelPreset[] => lengths.map((l) =
 const sheet = (sizes: [number, number][]): LabelPreset[] => sizes.map(([w, h]) => ({ id: `${w}x${h}`, widthMm: w, heightMm: h }));
 
 /** Print geometry for NIIMBOT models comes from niimbluelib's model library, so it stays in sync with the protocol. */
-function niimbot(model: `${PrinterModel}`, labels: LabelPreset[], detect: string[] = [model]): PrinterProfile {
+function niimbot(model: `${PrinterModel}`, labels: LabelPreset[], defaultId: string, detect: string[] = [model]): PrinterProfile {
   const meta = modelsLibrary.find((m) => m.model === model);
   if (!meta) throw new Error(`niimbluelib does not know model ${model}`);
+  const roll = labels.find((l) => l.id === defaultId);
+  if (!roll) throw new Error(`${model}: no roll ${defaultId}`);
   return {
     id: `niimbot-${model.toLowerCase()}`,
     vendor: "NIIMBOT",
@@ -19,6 +21,7 @@ function niimbot(model: `${PrinterModel}`, labels: LabelPreset[], detect: string
     printDirection: meta.printDirection,
     density: { min: meta.densityMin, max: meta.densityMax, default: meta.densityDefault },
     labels,
+    defaultLabel: { widthMm: roll.widthMm, heightMm: roll.heightMm },
     detect,
   };
 }
@@ -36,12 +39,12 @@ const B_SERIES_ROLLS = sheet([
 ]);
 
 export const PROFILES: PrinterProfile[] = [
-  niimbot("D110", D_SERIES_ROLLS),
-  niimbot("D110_M", D_SERIES_ROLLS),
-  niimbot("D11", D_SERIES_ROLLS),
-  niimbot("D11S", D_SERIES_ROLLS),
-  niimbot("B1", B_SERIES_ROLLS),
-  niimbot("B21", B_SERIES_ROLLS),
+  niimbot("D110", D_SERIES_ROLLS, "12x40"),
+  niimbot("D110_M", D_SERIES_ROLLS, "12x40"),
+  niimbot("D11", D_SERIES_ROLLS, "12x40"),
+  niimbot("D11S", D_SERIES_ROLLS, "12x40"),
+  niimbot("B1", B_SERIES_ROLLS, "50x30"),
+  niimbot("B21", B_SERIES_ROLLS, "50x30"),
 ];
 
 export const DEFAULT_PROFILE = PROFILES[0]!;

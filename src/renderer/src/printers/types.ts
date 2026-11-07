@@ -20,6 +20,8 @@ export type PrinterProfile = {
   printDirection: PrintDirection;
   density: { min: number; max: number; default: number };
   labels: LabelPreset[];
+  /** The roll a new label starts with: the one most people have in this printer. */
+  defaultLabel: LabelSize;
   /** Model names the driver reports, used to pick this profile automatically on connect. */
   detect: string[];
 };

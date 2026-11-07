@@ -47,8 +47,7 @@ export const useEditor = create<EditorState>((set) => {
   const edit = (fn: (doc: LabelDoc) => LabelDoc) =>
     set((s) => ({ doc: { ...fn(s.doc), updatedAt: new Date().toISOString() }, revision: s.revision + 1 }));
 
-  const firstRoll = useSettings.getState().profile.labels[0];
-  const initial = newDoc(firstRoll ? { widthMm: firstRoll.widthMm, heightMm: firstRoll.heightMm } : { widthMm: 40, heightMm: 12 });
+  const initial = newDoc(useSettings.getState().profile.defaultLabel);
   return {
     doc: initial,
     selectedId: initial.elements[0]?.id ?? null,
