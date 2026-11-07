@@ -1,6 +1,6 @@
 # Releasing
 
-Releases are built by GitHub Actions and published as GitHub Releases. The installed app checks
+Releases are built by GitHub Actions for Windows, macOS and Linux and published as GitHub Releases. The installed app checks
 GitHub Releases for new versions and updates itself.
 
 ## Make a release
@@ -33,7 +33,7 @@ The app sees a release only after you publish it. Beta versions reach only users
 | --- | --- | --- |
 | Windows | `Niimbot-Studio-Setup-<version>.exe` | Yes |
 | Linux | `.AppImage`, `.deb`, `.rpm` | Yes (`.deb` and `.rpm` ask for the administrator password) |
-| macOS | not built yet | Needs an Apple Developer ID to sign the app |
+| macOS | `.dmg` and `.zip` for Apple Silicon (arm64) and Intel (x64) | No. The app is not signed with an Apple Developer ID, so it shows a download link for new versions |
 
 ## Build locally
 
@@ -48,3 +48,8 @@ npm run dist     # installers for the current OS in dist/, nothing is uploaded
   Updates still work.
 - The update source is set in `electron-builder.yml` (`publish`). The repository must be public so
   that the app can read releases without a token.
+
+## Test build without releasing
+
+Run **Actions → Release → Run workflow**. The installers are attached to the run as artifacts for
+seven days, and nothing is published.

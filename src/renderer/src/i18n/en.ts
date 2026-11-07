@@ -104,6 +104,8 @@ export const en: Messages = {
   "update.idle": "Not checked yet.",
   "update.checking": "Checking…",
   "update.upToDate": "You have the latest version (checked {date}).",
+  "update.available": "Version {version} is available.",
+  "update.download": "Download",
   "update.downloading": "Downloading version {version}… {percent}%",
   "update.ready": "Version {version} is ready and will be installed when you close the app.",
   "update.noReleases": "No versions have been published on GitHub yet.",

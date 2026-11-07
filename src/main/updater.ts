@@ -5,6 +5,8 @@ import { getSettings, onSettingsChanged } from "./settings";
 
 const { autoUpdater } = electronUpdater;
 const CHECK_EVERY_MS = 6 * 60 * 60 * 1000;
+/** macOS only installs updates into a signed app; ours is not signed yet. */
+const CAN_INSTALL = process.platform !== "darwin";
 
 let state: UpdateState = app.isPackaged ? { kind: "idle" } : { kind: "unsupported", reason: "dev" };
 let timer: NodeJS.Timeout | undefined;
@@ -51,11 +53,13 @@ function schedule(): void {
  */
 export function initUpdater(): void {
   if (!app.isPackaged) return;
-  autoUpdater.autoDownload = true;
+  autoUpdater.autoDownload = CAN_INSTALL;
   autoUpdater.autoInstallOnAppQuit = true;
   autoUpdater.on("checking-for-update", () => set({ kind: "checking" }));
   autoUpdater.on("update-not-available", () => set({ kind: "upToDate", checkedAt: new Date().toISOString() }));
-  autoUpdater.on("update-available", (info) => set({ kind: "downloading", version: info.version, percent: 0 }));
+  autoUpdater.on("update-available", (info) =>
+    set(CAN_INSTALL ? { kind: "downloading", version: info.version, percent: 0 } : { kind: "available", version: info.version }),
+  );
   autoUpdater.on("download-progress", (p) => {
     if (state.kind === "downloading") set({ ...state, percent: Math.round(p.percent) });
   });

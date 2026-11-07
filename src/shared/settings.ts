@@ -26,6 +26,8 @@ export type UpdateState =
   | { kind: "idle" }
   | { kind: "checking" }
   | { kind: "upToDate"; checkedAt: string }
+  /** Found, but this install cannot update itself (unsigned macOS app): download it from the release page. */
+  | { kind: "available"; version: string }
   | { kind: "downloading"; version: string; percent: number }
   | { kind: "ready"; version: string }
   | { kind: "noReleases" }

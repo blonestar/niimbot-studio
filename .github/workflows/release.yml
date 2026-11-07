@@ -1,8 +1,11 @@
 name: Release
 
+# A pushed tag v* builds every platform and uploads a draft release.
+# Run it by hand (Actions > Release > Run workflow) to build installers without releasing them.
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -12,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v5
@@ -24,9 +27,26 @@ jobs:
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y rpm
       - run: npm ci
-      - name: Tag must match package.json version
+      - name: Release
+        if: github.ref_type == 'tag'
         shell: bash
-        run: test "v$(node -p "require('./package.json').version")" = "${GITHUB_REF_NAME}"
-      - run: npm run release
+        run: |
+          test "v$(node -p "require('./package.json').version")" = "${GITHUB_REF_NAME}"
+          npm run release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Test build
+        if: github.ref_type != 'tag'
+        run: npm run dist
+      - uses: actions/upload-artifact@v4
+        if: github.ref_type != 'tag'
+        with:
+          name: installers-${{ runner.os }}
+          path: |
+            dist/*.exe
+            dist/*.dmg
+            dist/*.zip
+            dist/*.AppImage
+            dist/*.deb
+            dist/*.rpm
+          retention-days: 7

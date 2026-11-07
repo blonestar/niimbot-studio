@@ -105,6 +105,8 @@ function describeUpdate(s: UpdateState, t: Translate, fmt: (iso: string) => stri
       return t("update.checking");
     case "upToDate":
       return t("update.upToDate", { date: fmt(s.checkedAt) });
+    case "available":
+      return t("update.available", { version: s.version });
     case "downloading":
       return t("update.downloading", { version: s.version, percent: s.percent });
     case "ready":
@@ -142,6 +144,11 @@ function UpdatesSection() {
         <button disabled={busy || state.kind === "unsupported"} onClick={() => void window.api.updater.check()}>
           {t("settings.checkNow")}
         </button>
+        {state.kind === "available" && (
+          <button className="primary" onClick={() => window.api.openExternal(`${PROJECT_URL}/releases/latest`)}>
+            {t("update.download")}
+          </button>
+        )}
         {state.kind === "ready" && (
           <button className="primary" onClick={() => window.api.updater.install()}>
             {t("settings.installNow")}

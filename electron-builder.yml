@@ -33,7 +33,17 @@ linux:
   synopsis: Label designer for NIIMBOT printers
   artifactName: niimbot-studio-${version}-${arch}.${ext}
 
+# Not signed with an Apple Developer ID yet: ad-hoc signature only. The app opens with
+# right-click > Open the first time, and it cannot install updates itself (see main/updater.ts).
 mac:
-  target: [dmg, zip]
+  target:
+    - target: dmg
+      arch: [arm64, x64]
+    - target: zip
+      arch: [arm64, x64]
   category: public.app-category.productivity
+  identity: "-"
+  hardenedRuntime: false
+  extendInfo:
+    NSBluetoothAlwaysUsageDescription: Niimbot Studio connects to your label printer over Bluetooth.
   artifactName: Niimbot-Studio-${version}-${arch}.${ext}

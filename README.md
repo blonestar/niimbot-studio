@@ -1,7 +1,7 @@
 # Niimbot Studio
 
 Design and print labels on NIIMBOT thermal printers from your computer, over Bluetooth.
-Runs on Windows and Linux. The interface is in English and Serbian (Latin and Cyrillic).
+Runs on Windows, macOS and Linux. The interface is in English and Serbian (Latin and Cyrillic).
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-dark.png">
@@ -38,6 +38,10 @@ Tested on a D110. The others use the same protocol through
 ## Download
 
 Get the installer for your system from [Releases](https://github.com/blonestar/niimbot-studio/releases).
+
+On macOS the app is not signed by Apple yet. The first time, macOS refuses to open it: open
+**System Settings → Privacy & Security** and click **Open Anyway**. New versions are not installed
+automatically on macOS; Settings shows a download link instead.
 
 ## Develop
 

@@ -106,6 +106,8 @@ export const sr = {
   "update.idle": "Još nije provereno.",
   "update.checking": "Proveravam…",
   "update.upToDate": "Imaš najnoviju verziju (provereno {date}).",
+  "update.available": "Dostupna je verzija {version}.",
+  "update.download": "Preuzmi",
   "update.downloading": "Preuzimam verziju {version}… {percent}%",
   "update.ready": "Verzija {version} je spremna i instaliraće se kad zatvoriš aplikaciju.",
   "update.noReleases": "Na GitHub-u još nema objavljenih verzija.",
