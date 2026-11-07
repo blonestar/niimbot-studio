@@ -1,0 +1,38 @@
+appId: io.github.blonestar.niimbotstudio
+productName: Niimbot Studio
+copyright: Copyright © 2026 blonestar
+directories:
+  buildResources: build
+  output: dist
+files:
+  - out/**
+  - package.json
+
+# Releases are uploaded as a draft. Publish the draft on GitHub to make it
+# visible to the auto-updater (mark it as a pre-release for beta testers).
+publish:
+  provider: github
+  owner: blonestar
+  repo: niimbot-studio
+  releaseType: draft
+
+win:
+  target: [nsis]
+  artifactName: Niimbot-Studio-Setup-${version}.${ext}
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+
+linux:
+  target: [AppImage, deb, rpm]
+  category: Office
+  syncDesktopName: true
+  maintainer: blonestar <blonestar@users.noreply.github.com>
+  synopsis: Label designer for NIIMBOT printers
+  artifactName: niimbot-studio-${version}-${arch}.${ext}
+
+mac:
+  target: [dmg, zip]
+  category: public.app-category.productivity
+  artifactName: Niimbot-Studio-${version}-${arch}.${ext}
