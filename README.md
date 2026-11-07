@@ -1,5 +1,7 @@
 # Niimbot Studio
 
+*Early alpha (0.1): expect rough edges. So far it is tested only on a NIIMBOT D110. Bug reports and ideas are welcome in [Issues](https://github.com/blonestar/niimbot-studio/issues).*
+
 Design and print labels on NIIMBOT thermal printers from your computer, over Bluetooth.
 Runs on Windows, macOS and Linux. The interface is in English and Serbian (Latin and Cyrillic).
 
