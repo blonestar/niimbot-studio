@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a86ff"/>
+      <stop offset="1" stop-color="#1a4fd0"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#dce4f2"/>
+    </linearGradient>
+    <clipPath id="tile">
+      <rect x="64" y="64" width="896" height="896" rx="208"/>
+    </clipPath>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#0a2463" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <rect x="64" y="64" width="896" height="896" rx="208" fill="url(#bg)"/>
+
+  <g clip-path="url(#tile)">
+    <g filter="url(#shadow)">
+      <rect x="332" y="420" width="360" height="600" fill="#d3ddee"/>
+    </g>
+    <rect x="356" y="508" width="312" height="268" rx="40" fill="#ffffff"/>
+    <rect x="356" y="808" width="312" height="268" rx="40" fill="#ffffff"/>
+  </g>
+  <rect x="404" y="584" width="216" height="48" rx="24" fill="#1b2433"/>
+  <rect x="404" y="660" width="148" height="48" rx="24" fill="#1b2433"/>
+
+  <g filter="url(#shadow)">
+    <rect x="196" y="196" width="632" height="292" rx="84" fill="url(#body)"/>
+  </g>
+  <rect x="304" y="420" width="416" height="30" rx="15" fill="#1b2433"/>
+  <circle cx="302" cy="306" r="34" fill="#3a86ff"/>
+  <rect x="384" y="288" width="232" height="36" rx="18" fill="#c3cde0"/>
+</svg>

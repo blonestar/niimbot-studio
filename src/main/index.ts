@@ -1,5 +1,6 @@
 import { app, BrowserWindow, ipcMain, session, shell } from "electron";
 import { join } from "node:path";
+import icon from "../../build/icon.png?asset";
 import type { LabelDoc } from "../shared/doc";
 import { attachBluetoothChooser } from "./bluetooth";
 import { library } from "./library";
@@ -19,6 +20,7 @@ function createWindow(): void {
     minWidth: 960,
     minHeight: 600,
     title: "Niimbot Studio",
+    icon,
     backgroundColor: "#f4f4f2",
     autoHideMenuBar: true,
     webPreferences: {
