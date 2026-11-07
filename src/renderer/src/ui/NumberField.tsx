@@ -11,16 +11,30 @@ type Props = {
   onChange(value: number): void;
 };
 
-/** Number input that lets the user type freely ("1,5", "") and commits only valid numbers. */
-export function NumberField({ label, value, unit, min, max, step = 1, disabled, onChange }: Props) {
-  const [text, setText] = useState(String(value));
-  useEffect(() => setText(String(value)), [value]);
+const parse = (raw: string) => (raw.trim() === "" ? NaN : Number(raw.replace(",", ".")));
 
-  const commit = (raw: string) => {
+/**
+ * Number input that lets the user type freely ("1", "1,", "1,5") and commits only numbers within range.
+ * Out-of-range input is clamped when the field loses focus, never while typing.
+ */
+export function NumberField({ label, value, unit, min = -Infinity, max = Infinity, step = 1, disabled, onChange }: Props) {
+  const [text, setText] = useState(String(value));
+  useEffect(() => {
+    setText((current) => (parse(current) === value ? current : String(value)));
+  }, [value]);
+
+  const edit = (raw: string) => {
     setText(raw);
-    const n = Number(raw.replace(",", "."));
-    if (raw.trim() === "" || Number.isNaN(n)) return;
-    onChange(Math.min(max ?? Infinity, Math.max(min ?? -Infinity, n)));
+    const n = parse(raw);
+    if (n >= min && n <= max) onChange(n);
+  };
+
+  const finish = () => {
+    const n = parse(text);
+    if (Number.isNaN(n)) return setText(String(value));
+    const clamped = Math.min(max, Math.max(min, n));
+    if (clamped !== value) onChange(clamped);
+    setText(String(clamped));
   };
 
   return (
@@ -28,15 +42,25 @@ export function NumberField({ label, value, unit, min, max, step = 1, disabled, 
       <span>{label}</span>
       <div className="number">
         <input
-          type="number"
+          type="text"
           inputMode="decimal"
           value={text}
-          step={step}
-          min={min}
-          max={max}
           disabled={disabled}
-          onChange={(e) => commit(e.target.value)}
-          onBlur={() => setText(String(value))}
+          onChange={(e) => edit(e.target.value)}
+          onBlur={finish}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") finish();
+            if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+              e.preventDefault();
+              const n = Math.min(
+                max,
+                Math.max(min, (Number.isNaN(parse(text)) ? value : parse(text)) + (e.key === "ArrowUp" ? step : -step)),
+              );
+              const rounded = Math.round(n * 100) / 100;
+              setText(String(rounded));
+              onChange(rounded);
+            }
+          }}
         />
         {unit && <em>{unit}</em>}
       </div>
